@@ -3,7 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MenuPanel({ setIsMenu }) {
+interface MenuPanelProps {
+  setIsMenu: (value: boolean) => void;
+}
+
+export default function MenuPanel({ setIsMenu }: MenuPanelProps) {
   return (
     <div className="absolute z-10 top-0 left-0 w-screen h-screen">
       <div className="bg-white w-[260px] h-screen z-20 absolute top-0 left-0 p-4">
