@@ -1,0 +1,532 @@
+// [
+//   {
+//     "state": true,
+//     "class_of": 8,
+//     "company_name": "예비창업자",
+//     "name": "원광희",
+//     "phone_number": "01036006208",
+//     "email": "sura-won@nate.com",
+//     "is_first": true,
+//     "password": "6mdpj5Ok"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 8,
+//     "company_name": "씽크뱅크",
+//     "name": "이영욱",
+//     "phone_number": "01094316256",
+//     "email": "duddnr1979@naver.com",
+//     "is_first": true,
+//     "password": "adzhlZnk"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "이지메이커스",
+//     "name": "박성걸",
+//     "phone_number": "01066587052",
+//     "email": "kirari98@gmail.com",
+//     "is_first": true,
+//     "password": "IE7yO8TJ"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "원바이오",
+//     "name": "원광희",
+//     "phone_number": "01036006208",
+//     "email": "sura-won@nate.com",
+//     "is_first": true,
+//     "password": "lbMrhCh0"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "라바스토리",
+//     "name": "이나라",
+//     "phone_number": "01046622300",
+//     "email": "narai5896@gmail.com",
+//     "is_first": true,
+//     "password": "6BBlGFRW"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "씽크뱅크",
+//     "name": "이영욱",
+//     "phone_number": "01094316256",
+//     "email": "duddnr1979@naver.com",
+//     "is_first": true,
+//     "password": "jK9I2cJ3"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "연을담다",
+//     "name": "임기환",
+//     "phone_number": "01086695373",
+//     "email": "singtheyeon@naver.com",
+//     "is_first": true,
+//     "password": "4zAKFSTl"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "오핀(offin)",
+//     "name": "정태진",
+//     "phone_number": "01099081096",
+//     "email": "offin.app@gmail.com",
+//     "is_first": true,
+//     "password": "CqfwH30r"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "음향컨설팅그룹라라(주)",
+//     "name": "주현경",
+//     "phone_number": "01045019846",
+//     "email": "hyunkyung.joo@gmail.com",
+//     "is_first": true,
+//     "password": "sXAH6ldf"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "라이플루언스",
+//     "name": "최영재",
+//     "phone_number": "01054389816",
+//     "email": "bejoyfuuul@gmail.com",
+//     "is_first": true,
+//     "password": "ZDAEquq4"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "말콤",
+//     "name": "한송희",
+//     "phone_number": "01099961347",
+//     "email": "many_@naver.com",
+//     "is_first": true,
+//     "password": "xJyvD0UR"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 9,
+//     "company_name": "주식회사 아이티몰즈",
+//     "name": "한영훈",
+//     "phone_number": "01029859441",
+//     "email": "nick.han@itmoulds.com",
+//     "is_first": true,
+//     "password": "OGtyogpn"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "비빔한복",
+//     "name": "강선구",
+//     "phone_number": "01027722777",
+//     "email": "sevenring@naver.com",
+//     "is_first": true,
+//     "password": "IJ67wvs1"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "금성아이티",
+//     "name": "곽표성",
+//     "phone_number": "01091543074",
+//     "email": "myksj1105@hanmail.net",
+//     "is_first": true,
+//     "password": "UiVr9h5C"
+//   },
+//   {
+//     "state": false,
+//     "class_of": 10,
+//     "company_name": "(주)참인(폐업)",
+//     "name": "김상복",
+//     "phone_number": "01039197012",
+//     "email": "sangtea333@gmail.com",
+//     "is_first": true,
+//     "password": "6Xn2c7o2"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "건화테크",
+//     "name": "김승언",
+//     "phone_number": "01038206772",
+//     "email": "bota08@naver.com",
+//     "is_first": true,
+//     "password": "kFrbudVs"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "(주)씨앤알컨베이어",
+//     "name": "김윤석",
+//     "phone_number": "01033177942",
+//     "email": "cnrconveyor@naver.com",
+//     "is_first": true,
+//     "password": "EazYqqFx"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "주식회사 젤요",
+//     "name": "김형범",
+//     "phone_number": "01056101088",
+//     "email": "zawadicoffee@naver.com",
+//     "is_first": true,
+//     "password": "oKXKcDwT"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "이지메이커스",
+//     "name": "박성걸",
+//     "phone_number": "01066587052",
+//     "email": "kirari98@gmail.com",
+//     "is_first": true,
+//     "password": "gCzPKeIP"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "프로세이프바이오",
+//     "name": "백현아",
+//     "phone_number": "01096795757",
+//     "email": "biohyun57@naver.com",
+//     "is_first": true,
+//     "password": "AR6n40iS"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "수수께끼",
+//     "name": "신상희",
+//     "phone_number": "01042000071",
+//     "email": "shoushoucake@naver.com",
+//     "is_first": true,
+//     "password": "p6LYr0Bs"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "(주)오가넬",
+//     "name": "윤지희",
+//     "phone_number": "01041692205",
+//     "email": "jiheeyoon81@gmail.com",
+//     "is_first": true,
+//     "password": "kVwBkYc9"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "(주)코스디자인",
+//     "name": "이명준",
+//     "phone_number": "01074842836",
+//     "email": "simba430@naver.com",
+//     "is_first": true,
+//     "password": "ALeCXkmj"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "투니",
+//     "name": "이유진",
+//     "phone_number": "01064877000",
+//     "email": "leebunny15@naver.com",
+//     "is_first": true,
+//     "password": "8Kekc4EW"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "예비창업자",
+//     "name": "장재원",
+//     "phone_number": "01022687979",
+//     "email": "jangasic@gmail.com",
+//     "is_first": true,
+//     "password": "ZCAxLUu0"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "숨소리",
+//     "name": "조계진",
+//     "phone_number": "01041465492",
+//     "email": "chogejin@hanmail.net",
+//     "is_first": true,
+//     "password": "IBGzlZZs"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "쿠커씨",
+//     "name": "최지수",
+//     "phone_number": "01087927536",
+//     "email": "cookerc@naver.com",
+//     "is_first": true,
+//     "password": "o75nByIf"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 10,
+//     "company_name": "예비창업자",
+//     "name": "한성윤",
+//     "phone_number": "01037002002",
+//     "email": "coollime333@naver.com",
+//     "is_first": true,
+//     "password": "qkjbe6Fn"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "(유)위시아트랩",
+//     "name": "한송지",
+//     "phone_number": "01051185066",
+//     "email": "hans5066@naver.com",
+//     "is_first": true,
+//     "password": "PEWcpXQL"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "맨든",
+//     "name": "손형주",
+//     "phone_number": "01041540062",
+//     "email": "pviivq@naver.com",
+//     "is_first": true,
+//     "password": "ojPGzUct"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "예솜",
+//     "name": "최선화",
+//     "phone_number": "01074972403",
+//     "email": "piaoliangsun@gmail.com",
+//     "is_first": true,
+//     "password": "OkQwZuUv"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "생강이랑 발효이야기",
+//     "name": "김수비",
+//     "phone_number": "01054514797",
+//     "email": "jazz306@hanmail.net",
+//     "is_first": true,
+//     "password": "0IS3DS60"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "비와이테크",
+//     "name": "박희준",
+//     "phone_number": "01041435264",
+//     "email": "bytech83@hanmail.net",
+//     "is_first": true,
+//     "password": "ByZPyKq8"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "주식회사 아우라",
+//     "name": "최부규",
+//     "phone_number": "01038677555",
+//     "email": "auraf@naver.com",
+//     "is_first": true,
+//     "password": "22RNX3Xv"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "대영",
+//     "name": "최은서",
+//     "phone_number": "01093297749",
+//     "email": "jieun017@hotmail.com",
+//     "is_first": true,
+//     "password": "oDwWwP7A"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "(주)포아워스킨",
+//     "name": "우상미",
+//     "phone_number": "01021217921",
+//     "email": "sally11woo@naver.cm",
+//     "is_first": true,
+//     "password": "6FY1IdNz"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "유한회사부동산랜드",
+//     "name": "송홍주",
+//     "phone_number": "01054424575",
+//     "email": "ghdwnwlgp@naver.com",
+//     "is_first": true,
+//     "password": "N3s7kF8C"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "유스타팅",
+//     "name": "이영근",
+//     "phone_number": "01046182487",
+//     "email": "ceo@youthstarting.com",
+//     "is_first": true,
+//     "password": "nOo73ewT"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "영상콘텐츠제작소",
+//     "name": "여동한",
+//     "phone_number": "01046586644",
+//     "email": "plzcuz@naver.com",
+//     "is_first": true,
+//     "password": "SjRi8KAQ"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "에이비(AB) 오토메이션",
+//     "name": "한동진",
+//     "phone_number": "01093586365",
+//     "email": "dongjin@abauto.co.kr",
+//     "is_first": true,
+//     "password": "r698XDi9"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "(주)프롬네이처",
+//     "name": "김우현",
+//     "phone_number": "01088521980",
+//     "email": "fromn0212@naver.com",
+//     "is_first": true,
+//     "password": "FLrspEys"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "주식회사 리본",
+//     "name": "김다운",
+//     "phone_number": "01052091452",
+//     "email": "kdw930919@naver.com",
+//     "is_first": true,
+//     "password": "0ZQSg3AF"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 11,
+//     "company_name": "에코패킹",
+//     "name": "이인곤",
+//     "phone_number": "01062329860",
+//     "email": "eldls6232@naver.com",
+//     "is_first": true,
+//     "password": "F6Qsjfb6"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "윙픽",
+//     "name": "이문영",
+//     "phone_number": "01073997907",
+//     "email": "loveysb7@naver.com",
+//     "is_first": true,
+//     "password": "q8nSVEZf"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "위로푸드(WIROFOOD)",
+//     "name": "김세미",
+//     "phone_number": "01031853774",
+//     "email": "wirofood20@gmail.com",
+//     "is_first": true,
+//     "password": "pAgR12bN"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "머쉬앤",
+//     "name": "정지현",
+//     "phone_number": "01097204060",
+//     "email": "bf_wave@naver.com",
+//     "is_first": true,
+//     "password": "oMeDKMrO"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "마이마이마이",
+//     "name": "김지수",
+//     "phone_number": "01035912628",
+//     "email": "luvzisu@naver.com",
+//     "is_first": true,
+//     "password": "LqIJOFor"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "주식회사 모멘트",
+//     "name": "김정호",
+//     "phone_number": "01047832182",
+//     "email": "momentco@naver.com",
+//     "is_first": true,
+//     "password": "a15zQI2G"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "시크한(SEEKHAN)",
+//     "name": "신학수",
+//     "phone_number": "01026594433",
+//     "email": "ryan@seekhan.com",
+//     "is_first": true,
+//     "password": "gqaVZPbW"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "잇모닝",
+//     "name": "김현우",
+//     "phone_number": "01050120563",
+//     "email": "dust1114@naver.com",
+//     "is_first": true,
+//     "password": "SABNhJLI"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "포레세(FORESE)",
+//     "name": "고현지",
+//     "phone_number": "01025436441",
+//     "email": "rhguswl202@naver.com",
+//     "is_first": true,
+//     "password": "JapyfN0e"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "주식회사 반석산업",
+//     "name": "송찬영",
+//     "phone_number": "01023868330",
+//     "email": "chan8895@naver.com",
+//     "is_first": true,
+//     "password": "tiUPGydR"
+//   },
+//   {
+//     "state": true,
+//     "class_of": 12,
+//     "company_name": "(유)성우폴리머",
+//     "name": "김은우",
+//     "phone_number": "01082256346",
+//     "email": "dmsdn185@naver.com",
+//     "is_first": true,
+//     "password": "jQDbM0Q1"
+//   }
+// ]
