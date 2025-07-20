@@ -6,7 +6,11 @@ const nextConfig: NextConfig = {
     domains: [
       "spxfppfdlitjgrxinxvz.supabase.co", // 본인의 Supabase 프로젝트 도메인
     ],
-    unoptimized: true, // 이미지 최적화 비활성화 (배포 환경에서 문제 해결)
+    unoptimized: false, // 이미지 최적화 다시 활성화
+  },
+  // 정적 파일 서빙을 위한 설정
+  experimental: {
+    optimizeCss: true,
   },
 };
 
