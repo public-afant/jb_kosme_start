@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={` ${pretendard.variable} flex justify-center w-screen min-h-screen bg-gray-200`}
       >
-        <div className="bg-white w-[600px] min-w-[300px] p-3">
+        <div className="bg-white w-[600px] min-w-[300px] py-3">
           <Splash />
           <Header />
           {children}

@@ -4,7 +4,7 @@ import HomeNoticeList from "./home-notice-list";
 
 export default function Home() {
   return (
-    <div className="z-10">
+    <div className="z-10 px-3">
       <div className="w-full  bg-[#2A3995] rounded-2xl mt-1 p-6 flex flex-col justify-between ">
         <Image
           src={"/icon/ic-title-white.png"}

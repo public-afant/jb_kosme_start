@@ -24,21 +24,25 @@ export default function Login() {
     if (error) {
       setError(error.message);
     } else {
+      window.dispatchEvent(new Event("profileImageUpdated"));
       router.push("/");
     }
   };
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
-      <form className="flex flex-col items-center gap-4" onSubmit={handleLogin}>
-        <div>
+    <div className="h-full w-full flex justify-center items-center">
+      <form className="flex flex-col items-center gap-2" onSubmit={handleLogin}>
+        <div className="flex flex-col items-center">
           <Image
             src={"/icon/ic-Logo_2.png"}
             width={150}
             height={60}
             alt="title"
-            className="mb-10"
+            className="mb-4"
           />
+          <div className="text-lg font-semibold mb-4 text-[#033892]">
+            전북청년창업사관학교 동문회
+          </div>
         </div>
         <input
           type="email"
@@ -46,7 +50,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="border p-2 rounded w-60"
+          className="border p-2 rounded w-full border-gray-300"
         />
         <input
           type="password"
@@ -54,11 +58,12 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="border p-2 rounded w-60"
+          className="border p-2 rounded w-full
+           border-gray-300"
         />
         <button
           type="submit"
-          className="bg-[#2A3995] text-white font-semibold py-2 px-8 rounded w-60 disabled:bg-gray-400"
+          className="bg-[#2A3995] text-white font-semibold mt-4 py-3 px-8 rounded w-full disabled:bg-gray-400"
           disabled={loading}
         >
           {loading ? "로그인 중..." : "로그인"}

@@ -129,7 +129,7 @@ export default function Alumni() {
   return (
     <div>
       {/* 검색 및 필터 섹션 */}
-      <div className="my-1">
+      <div className="my-1 px-3">
         <div className="flex flex-col sm:flex-row gap-2">
           {/* 기수 선택 */}
           <div className="">

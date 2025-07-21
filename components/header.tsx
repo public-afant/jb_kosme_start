@@ -65,7 +65,7 @@ export default function Header() {
   if (pathname === "/login") return null;
 
   return (
-    <div className="flex justify-between pb-3">
+    <div className="flex justify-between pb-3 px-3">
       <div className="flex items-center">
         <div className="mr-1">
           <Menu />

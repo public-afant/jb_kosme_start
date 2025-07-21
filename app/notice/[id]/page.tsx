@@ -79,8 +79,8 @@ export default function NoticeDetail() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      {/* 뒤로가기 버튼 */}
+    <div className="mt-4 px-3">
+      {/* 뒤로가기 버튼
       <button
         onClick={() => router.back()}
         className="mb-4 flex items-center text-gray-600 hover:text-gray-800"
@@ -99,10 +99,10 @@ export default function NoticeDetail() {
           />
         </svg>
         목록으로
-      </button>
+      </button> */}
 
       {/* 공지사항 내용 */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6">
+      <div className="bg-white">
         {/* 제목 */}
         <h1 className="text-2xl font-bold mb-4 text-gray-900">
           {notice.title}

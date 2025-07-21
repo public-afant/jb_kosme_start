@@ -246,7 +246,7 @@ export default function Mypage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen  bg-gray-50">
       <div className="max-w-2xl mx-auto p-3 ">
         {/* 헤더 */}
         <div className="mb-10 mt-4">

@@ -2,7 +2,7 @@ import NoticeList from "../(home)/notice-list";
 
 export default function Notice() {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-3">
       <div className="mb-6">
         <div className="font-bold text-[22px] mb-2">
           <span className="text-[#2A3995]">공지</span>사항
