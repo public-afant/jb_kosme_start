@@ -12,6 +12,7 @@ type User = {
   id: string;
   logo_url?: string;
   updated_at?: string;
+  role?: string;
 };
 
 export default function Header() {
