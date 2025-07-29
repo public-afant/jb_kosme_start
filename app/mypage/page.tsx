@@ -19,6 +19,7 @@ type User = {
   created_at: string;
   updated_at: string;
   is_first?: boolean;
+  is_agree?: boolean;
 };
 
 export default function Mypage() {
@@ -29,6 +30,7 @@ export default function Mypage() {
     company_name: "",
     phone_number: "",
   });
+  const [isAgree, setIsAgree] = useState(false);
   const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -79,6 +81,7 @@ export default function Mypage() {
         phone_number: userData.phone_number || "",
       });
       setItems(userData.item || []);
+      setIsAgree(userData.is_agree || false);
 
       // is_first가 true인 경우 비밀번호 변경 모달 자동 열기
       if (userData.is_first) {
@@ -189,6 +192,7 @@ export default function Mypage() {
           phone_number: formData.phone_number,
           logo_url: logoUrl,
           item: items,
+          is_agree: isAgree,
           updated_at: new Date().toISOString(),
         })
         .eq("id", user.id);
@@ -329,6 +333,7 @@ export default function Mypage() {
       phone_number: user?.phone_number || "",
     });
     setItems(user?.item || []);
+    setIsAgree(user?.is_agree || false);
     setProfileImage(null);
     setImagePreview("");
     setShowModal(true);
@@ -401,12 +406,13 @@ export default function Mypage() {
             <div className="text-gray-700 font-semibold text-[16px]">
               {user.company_name || "회사명 미입력"}
             </div>
-            <div className="text-gray-500 text-sm mb-1">
+            <div className="text-gray-500 text-sm ">
               {user.email || "이메일 미입력"}
             </div>
-            {/* <div className="text-gray-500 text-sm">
+
+            <div className="text-gray-500 text-sm mb-1">
               {user.phone_number || "전화번호 미입력"}
-            </div> */}
+            </div>
           </div>
 
           {/* 수정 버튼 */}
@@ -544,19 +550,32 @@ export default function Mypage() {
                 />
               </div>
 
-              {/* 전화번호 */}
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  전화번호
-                </label>
-                <input
-                  type="tel"
-                  name="phone_number"
-                  value={formData.phone_number}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div> */}
+              {/* 전화번호 노출 동의 */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    전화번호 공개 설정
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setIsAgree(!isAgree)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#2A3995] focus:ring-offset-2 ${
+                      isAgree ? "bg-[#2A3995]" : "bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        isAgree ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {isAgree
+                    ? "다른 동문들이 내 전화번호를 볼 수 있습니다."
+                    : "다른 동문들이 내 전화번호를 볼 수 없습니다."}
+                </p>
+              </div>
 
               {/* 아이템 태그 */}
               <div>

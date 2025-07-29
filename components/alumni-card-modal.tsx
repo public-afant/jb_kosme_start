@@ -9,6 +9,7 @@ export type AlumniUser = {
   logo_url: string | null;
   item: string[];
   email: string;
+  is_agree: boolean;
 };
 
 type Props = {
@@ -53,10 +54,13 @@ export default function AlumniCardModal({ user, onClose }: Props) {
           <div className="text-gray-700 font-semibold text-[16px] ">
             {user.company_name}
           </div>
-          <div className="text-gray-500 text-sm mb-2">{user.email}</div>
+          <div className="text-gray-500 text-sm">{user.email}</div>
+          {user.is_agree && (
+            <div className="text-gray-500 text-sm mb-1">
+              {user.phone_number}
+            </div>
+          )}
         </div>
-        {/* <div className="text-gray-500 text-sm">{user.phone_number}</div> */}
-        {/* 태그 렌더링 */}
       </div>
     </div>
   );

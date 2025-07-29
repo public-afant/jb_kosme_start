@@ -16,6 +16,7 @@ type User = {
   logo_url: string | null;
   item: string[];
   email: string | null;
+  is_agree: boolean;
 };
 
 export default function Alumni() {
@@ -55,7 +56,7 @@ export default function Alumni() {
     let query = supabase
       .from("user_with_email")
       .select(
-        "id, name, class_of, company_name, phone_number, logo_url, item, email"
+        "id, name, class_of, company_name, phone_number, logo_url, item, email, is_agree"
       )
       .eq("role", "user")
       .eq("state", true)
