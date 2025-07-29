@@ -251,11 +251,11 @@ export default function Events() {
           <p className="text-gray-600">
             동문회의 다양한 행사 일정을 확인하세요.
           </p>
-          {events.length > 0 && (
+          {/* {events.length > 0 && (
             <p className="text-sm text-gray-500 mt-1">
               총 {events.length}개의 행사가 등록되어 있습니다.
             </p>
-          )}
+          )} */}
         </div>
 
         {/* 캘린더 */}

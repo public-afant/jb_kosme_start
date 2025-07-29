@@ -63,7 +63,7 @@ export default function Header() {
     }
   };
 
-  if (pathname === "/login") return null;
+  if (pathname === "/login" || pathname === "/signup") return null;
 
   // console.log(user);
 

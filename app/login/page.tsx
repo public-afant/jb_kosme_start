@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -33,10 +34,12 @@ export default function Login() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    let userData: { state: boolean; is_first: boolean } | null = null;
     if (user) {
-      const { data: userData, error: userError } = await supabase
+      const { data, error: userError } = await supabase
         .from("users")
-        .select("state")
+        .select("state, is_first")
         .eq("id", user.id)
         .single();
 
@@ -45,6 +48,8 @@ export default function Login() {
         setError("사용자 정보를 불러오는 중 오류가 발생했습니다.");
         return;
       }
+
+      userData = data;
 
       if (!userData.state) {
         // state가 false면 로그아웃하고 승인 대기 모달 띄우기
@@ -58,7 +63,13 @@ export default function Login() {
     // state가 true면 정상 로그인 진행
     setLoading(false);
     window.dispatchEvent(new Event("profileImageUpdated"));
-    router.push("/");
+
+    // is_first가 true면 마이페이지로, 아니면 홈으로
+    if (userData?.is_first) {
+      router.push("/mypage");
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -100,6 +111,16 @@ export default function Login() {
           {loading ? "로그인 중..." : "로그인"}
         </button>
         {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+
+        {/* 회원가입 버튼 */}
+        <div className="mt-4 text-center">
+          <span className="text-gray-600 text-sm">계정이 없으신가요? </span>
+          <Link href="/signup">
+            <span className="text-[#2A3995] font-semibold text-sm hover:underline">
+              회원가입
+            </span>
+          </Link>
+        </div>
       </form>
 
       {/* 승인 대기 모달 */}

@@ -4,7 +4,13 @@ import { checkAuth } from "./utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
   // console.log("Read Middleware! ");
-  const publicPaths = ["/login", "/favicon.ico", "/apple-icon.png", "/icon/"];
+  const publicPaths = [
+    "/login",
+    "/signup",
+    "/favicon.ico",
+    "/apple-icon.png",
+    "/icon/",
+  ];
   if (publicPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
     return NextResponse.next();
   }
