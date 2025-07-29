@@ -113,7 +113,7 @@ export default function AdminEventsPage() {
   };
 
   return (
-    <div className="px-3 max-w-4xl mx-auto">
+    <div className="px-3 py max-w-4xl mx-auto">
       <div className="flex items-center justify-between mt-2 mb-1">
         <h1 className="text-2xl font-bold">행사일정 관리</h1>
         <button
@@ -132,19 +132,19 @@ export default function AdminEventsPage() {
           {events.map((event) => (
             <li
               key={event.id}
-              className="p-4 flex items-center gap-4 border-b border-gray-200 last:border-b-0"
+              className="py-4 px-2 flex items-center gap-4 border-b border-gray-200 last:border-b-0"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-bold text-lg truncate">{event.title}</h3>
                 </div>
                 <div className="text-gray-600 text-sm mb-2 line-clamp-2">
-                  {event.content}
+                  {/* {event.content} */}
+                  <span className="text-gray-500 text-sm font-semibold">
+                    {formatDate(event.date)} {formatTime(event.time)}
+                  </span>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <span>작성자: {event.user_name}</span>
-                  <span>날짜: {formatDate(event.date)}</span>
-                  <span>시간: {formatTime(event.time)}</span>
                   <span>작성일: {formatDate(event.created_at)}</span>
                 </div>
               </div>

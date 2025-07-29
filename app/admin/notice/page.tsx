@@ -128,7 +128,7 @@ export default function AdminNoticePage() {
           {notices.map((notice) => (
             <li
               key={notice.id}
-              className="p-4 flex items-center gap-4 border-b border-gray-200 last:border-b-0"
+              className="py-4 px-2 flex items-center gap-4 border-b border-gray-200 last:border-b-0"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
@@ -138,7 +138,6 @@ export default function AdminNoticePage() {
                   {notice.content}
                 </div>
                 <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <span>작성자: {notice.user_name}</span>
                   <span>조회수: {notice.views}</span>
                   <span>작성일: {formatDate(notice.created_at)}</span>
                 </div>
