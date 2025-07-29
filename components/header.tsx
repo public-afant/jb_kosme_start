@@ -48,7 +48,7 @@ export default function Header() {
 
       const { data: userData, error: userError } = await supabase
         .from("user_with_email")
-        .select("id, logo_url, updated_at")
+        .select("id, logo_url, updated_at,role")
         .eq("id", authUser.id)
         .single();
 
@@ -64,8 +64,10 @@ export default function Header() {
 
   if (pathname === "/login") return null;
 
+  // console.log(user);
+
   return (
-    <div className="flex justify-between pb-3 px-3">
+    <div className="flex justify-between pb-3 px-3 items-center">
       <div className="flex items-center">
         <div className="mr-1">
           <Menu />
@@ -83,19 +85,29 @@ export default function Header() {
           </div>
         </Link>
       </div>
-      <Link href={"/mypage"} className="flex items-center">
-        <Image
-          src={
-            user?.logo_url
-              ? `${user.logo_url}?t=${user.updated_at}&v=${Date.now()}`
-              : "/icon/profile-empty.png"
-          }
-          width={100}
-          height={100}
-          alt="user"
-          className="w-8 h-8 rounded-full object-cover border border-gray-200"
-        />
-      </Link>
+      <div className="flex items-center">
+        {user?.role === "admin" && (
+          <Link
+            href={"/admin/alumni"}
+            className="flex items-center mr-4 rounded-full border border-gray-300 text-[#2A3995] px-4 py-1 text-[14px] font-semibold"
+          >
+            관리자
+          </Link>
+        )}
+        <Link href={"/mypage"} className="flex items-center mr-2">
+          <Image
+            src={
+              user?.logo_url
+                ? `${user.logo_url}?t=${user.updated_at}&v=${Date.now()}`
+                : "/icon/profile-empty.png"
+            }
+            width={100}
+            height={100}
+            alt="user"
+            className="w-8 h-8 rounded-full object-cover border border-gray-200"
+          />
+        </Link>
+      </div>
     </div>
   );
 }

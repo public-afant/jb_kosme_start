@@ -31,7 +31,7 @@ export default function AlumniCardModal({ user, onClose }: Props) {
           alt="logo"
           width={200}
           height={200}
-          className="w-25 h-25 object-contain bg-white border-1 border-gray-200 rounded-full mb-5"
+          className="w-25 h-25 object-cover aspect-square bg-white border-1 border-gray-200 rounded-full mb-5"
         />
         {Array.isArray(user.item) && user.item.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-5 justify-center">

@@ -81,6 +81,35 @@ export default function MenuPanel({ setIsMenu }: MenuPanelProps) {
             </Link>
           </div>
 
+          <div className="w-full h-px bg-gray-200 my-6" />
+
+          <div
+            className="flex flex-col mt-6 gap-2 *:flex *:font-bold *:rounded-xl
+         text-[18px] *:items-center *:w-full
+      "
+          >
+            <Link
+              href={"/admin/alumni"}
+              className="mb-1"
+              onClick={() => setIsMenu(false)}
+            >
+              <div className="pl-1">동문 관리</div>
+            </Link>
+            <Link
+              href={"/admin/notice"}
+              className="mb-1"
+              onClick={() => setIsMenu(false)}
+            >
+              <div className="pl-1">공지사항 관리</div>
+            </Link>
+            <Link
+              href={"/admin/events"}
+              className="mb-1"
+              onClick={() => setIsMenu(false)}
+            >
+              <div className="pl-1">행사일정 관리</div>
+            </Link>
+          </div>
           {/* <Link
             href={"/alumni"}
             className="mb-8"

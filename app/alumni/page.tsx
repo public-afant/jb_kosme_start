@@ -58,6 +58,7 @@ export default function Alumni() {
         "id, name, class_of, company_name, phone_number, logo_url, item, email"
       )
       .eq("role", "user")
+      .eq("state", true)
       .order("class_of", { ascending: true })
       .order("id", { ascending: true });
 
@@ -181,7 +182,7 @@ export default function Alumni() {
               alt="logo"
               width={100}
               height={100}
-              className="w-14 h-14 object-contain bg-white border-1 border-gray-200 rounded-full"
+              className="w-14 h-14 object-cover aspect-square bg-white border-1 border-gray-200 rounded-full"
             />
             <div>
               <div className="font-bold text-[16px]">
