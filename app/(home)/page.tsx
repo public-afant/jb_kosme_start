@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import HomeNoticeList from "./home-notice-list";
+import BannerPopup from "@/components/banner-slider";
 
 export default function Home() {
   return (
     <div className="z-10 px-3">
+      {/* 배너 팝업 */}
+      <BannerPopup />
+
       <div className="w-full  bg-[#2A3995] rounded-2xl mt-1 p-6 flex flex-col justify-between ">
         <Image
           src={"/icon/ic-title-white.png"}

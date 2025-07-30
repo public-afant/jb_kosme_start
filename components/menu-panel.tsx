@@ -109,6 +109,13 @@ export default function MenuPanel({ setIsMenu }: MenuPanelProps) {
             >
               <div className="pl-1">행사일정 관리</div>
             </Link>
+            <Link
+              href={"/admin/banners"}
+              className="mb-1"
+              onClick={() => setIsMenu(false)}
+            >
+              <div className="pl-1">배너 관리</div>
+            </Link>
           </div>
           {/* <Link
             href={"/alumni"}

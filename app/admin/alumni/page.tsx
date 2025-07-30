@@ -443,8 +443,7 @@ export default function AdminAlumniPage() {
         .select(
           "id, state, class_of, company_name, name, phone_number, email, logo_url, role, created_at"
         )
-        .eq("role", "user")
-        .order("class_of", { ascending: true });
+        .eq("role", "user");
       if (error) {
         setError("동문 데이터를 불러오는 중 오류가 발생했습니다.");
         return;
@@ -493,10 +492,18 @@ export default function AdminAlumniPage() {
     }
   };
 
-  // 승인 대기 중인 동문들만 필터링
-  const pendingUsers = users.filter((user) => !user.state);
-  // 활성화된 동문들만 필터링
-  const activeUsers = users.filter((user) => user.state);
+  // 승인 대기 중인 동문들만 필터링 (최근 등록순)
+  const pendingUsers = users
+    .filter((user) => !user.state)
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+
+  // 활성화된 동문들만 필터링 (기수 오름차순)
+  const activeUsers = users
+    .filter((user) => user.state)
+    .sort((a, b) => a.class_of - b.class_of);
 
   return (
     <div className="px-3 max-w-2xl mx-auto">

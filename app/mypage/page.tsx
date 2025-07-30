@@ -43,6 +43,10 @@ export default function Mypage() {
   });
   const [passwordError, setPasswordError] = useState("");
   const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [withdrawPassword, setWithdrawPassword] = useState("");
+  const [withdrawError, setWithdrawError] = useState("");
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -321,6 +325,75 @@ export default function Mypage() {
     }
   };
 
+  const handleWithdraw = async () => {
+    if (!withdrawPassword.trim()) {
+      setWithdrawError("비밀번호를 입력해주세요.");
+      return;
+    }
+
+    setWithdrawLoading(true);
+    setWithdrawError("");
+
+    try {
+      // 비밀번호 확인
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user?.email || "",
+        password: withdrawPassword,
+      });
+
+      if (signInError) {
+        setWithdrawError("비밀번호가 올바르지 않습니다.");
+        setWithdrawLoading(false);
+        return;
+      }
+
+      // 프로필 이미지가 있다면 Storage에서 삭제
+      if (user?.logo_url) {
+        const response = await fetch("/api/profile-upload", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
+        // 삭제 실패해도 계속 진행
+        if (!response.ok) {
+          console.error("Profile image deletion failed:", response.statusText);
+        }
+      }
+
+      // users 테이블에서 삭제
+      const { error: userDeleteError } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", user?.id);
+
+      if (userDeleteError) {
+        setWithdrawError("회원 탈퇴 중 오류가 발생했습니다.");
+        setWithdrawLoading(false);
+        return;
+      }
+
+      // Supabase Auth에서 사용자 삭제
+      const { error: authDeleteError } = await supabase.auth.admin.deleteUser(
+        user?.id || ""
+      );
+
+      if (authDeleteError) {
+        console.error("Auth user deletion failed:", authDeleteError);
+        // users 테이블은 삭제되었으므로 경고만 표시
+      }
+
+      alert("회원 탈퇴가 완료되었습니다.");
+      router.push("/login");
+    } catch (error) {
+      console.error("Withdraw error:", error);
+      setWithdrawError("회원 탈퇴 중 오류가 발생했습니다.");
+    } finally {
+      setWithdrawLoading(false);
+    }
+  };
+
   const handleResetProfileImage = () => {
     // 프리뷰를 기본 이미지로 변경
     setImagePreview("/icon/profile-empty.png");
@@ -356,8 +429,8 @@ export default function Mypage() {
   }
 
   return (
-    <div className="min-h-screen  bg-gray-50">
-      <div className="max-w-2xl mx-auto p-3 ">
+    <div className="min-h-screen  bg-gray-50 flex flex-col justify-between">
+      <div className=" p-3 ">
         {/* 헤더 */}
         <div className="mb-10 mt-4">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">마이페이지</h1>
@@ -425,24 +498,33 @@ export default function Mypage() {
         </div>
 
         {/* 하단 여백 */}
-        <div className="h-20"></div>
+        {/* <div className="h-20"></div> */}
       </div>
-
       {/* 하단 고정 버튼들 */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3">
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={() => setShowPasswordModal(true)}
-            className="text-[#2A3995] hover:text-[#1f2b7a] text-sm font-medium transition-colors"
-          >
-            비밀번호 변경
-          </button>
-          <button
-            onClick={handleLogout}
-            className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors"
-          >
-            로그아웃
-          </button>
+      <div className="">
+        <div className="  bg-white border-t border-gray-200 p-3">
+          <div className="max-w-2xl mx-auto">
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={() => setShowPasswordModal(true)}
+                className="text-[#2A3995] hover:text-[#1f2b7a] text-sm font-medium transition-colors"
+              >
+                비밀번호 변경
+              </button>
+              <button
+                onClick={() => setShowWithdrawModal(true)}
+                className="text-orange-600 hover:text-orange-700 text-sm font-medium transition-colors"
+              >
+                회원 탈퇴
+              </button>
+              <button
+                onClick={handleLogout}
+                className="text-red-500 hover:text-red-700 text-sm font-medium transition-colors"
+              >
+                로그아웃
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -744,6 +826,101 @@ export default function Mypage() {
                       confirmPassword: "",
                     });
                     setPasswordError("");
+                  }}
+                  className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                >
+                  취소
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 회원 탈퇴 모달 */}
+      {showWithdrawModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md mx-4">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900">회원 탈퇴</h2>
+              <button
+                onClick={() => {
+                  setShowWithdrawModal(false);
+                  setWithdrawPassword("");
+                  setWithdrawError("");
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center mb-2">
+                <svg
+                  className="w-5 h-5 text-red-500 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+                <span className="text-red-800 font-semibold">주의사항</span>
+              </div>
+              <ul className="text-red-700 text-sm space-y-1">
+                <li>• 회원 탈퇴 시 모든 데이터가 영구적으로 삭제됩니다.</li>
+                <li>
+                  • 프로필 이미지, 개인정보, 작성한 게시글 등이 모두 삭제됩니다.
+                </li>
+                <li>• 탈퇴 후에는 복구가 불가능합니다.</li>
+                <li>• 정말 탈퇴하시겠습니까?</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              {/* 비밀번호 확인 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  비밀번호 확인
+                </label>
+                <input
+                  type="password"
+                  value={withdrawPassword}
+                  onChange={(e) => setWithdrawPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                  placeholder="비밀번호를 입력하세요"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  회원 탈퇴를 위해 비밀번호를 입력해주세요.
+                </p>
+              </div>
+
+              {/* 에러 메시지 */}
+              {withdrawError && (
+                <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+                  {withdrawError}
+                </div>
+              )}
+
+              {/* 버튼 */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={handleWithdraw}
+                  disabled={withdrawLoading}
+                  className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  {withdrawLoading ? "처리 중..." : "회원 탈퇴"}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowWithdrawModal(false);
+                    setWithdrawPassword("");
+                    setWithdrawError("");
                   }}
                   className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
