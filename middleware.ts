@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
     "/apple-icon.png",
     "/icon/",
     "/manifest.webmanifest",
+    "/.well-known/assetlinks.json",
   ];
   if (publicPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
     return NextResponse.next();
