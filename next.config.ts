@@ -6,7 +6,6 @@ const withPWA = createNextPWA({
   disable: process.env.NODE_ENV === "development",
   register: true, // 클라이언트에서 자동 등록
   skipWaiting: true, // 새 SW가 오면 즉시 활성화
-  manifest: "/manifest.json",
   // 필요 시 런타임 캐싱 규칙 추가
   // runtimeCaching: [
   //   {
@@ -17,7 +16,7 @@ const withPWA = createNextPWA({
   // ],
 });
 
-const nextConfig: NextConfig = {
+const nextConfig = withPWA({
   /* config options here */
   reactStrictMode: true,
   images: {
@@ -31,6 +30,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
   },
-};
+});
 
 export default nextConfig;
