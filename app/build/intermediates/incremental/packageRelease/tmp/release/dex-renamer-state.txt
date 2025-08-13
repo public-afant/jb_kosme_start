@@ -1,0 +1,4 @@
+#Thu Aug 14 03:23:17 KST 2025
+base.0=/Users/yh/workspace/jb_kosme_start/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

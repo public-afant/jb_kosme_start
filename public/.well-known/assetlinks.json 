@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.jb_kosme_start.twa",
+      "sha256_cert_fingerprints": [
+        "79:AD:11:C2:7B:C3:77:6D:97:39:B0:F7:35:C1:AD:72:80:85:C9:ED:40:FD:B0:5D:8F:FB:D9:62:B3:90:8F:94"
+      ]
+    }
+  }
+]
