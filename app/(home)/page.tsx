@@ -59,6 +59,17 @@ export default function Home() {
         </div>
         <HomeNoticeList />
       </div>
+
+      {/* 하단 CI 아이콘 */}
+      <div className="flex justify-center mt-8 mb-4">
+        <Image
+          src="/icon/ci.png"
+          width={120}
+          height={60}
+          alt="CI"
+          className="opacity-70"
+        />
+      </div>
     </div>
   );
 }
