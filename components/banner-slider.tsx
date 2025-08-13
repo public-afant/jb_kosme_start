@@ -61,7 +61,7 @@ export default function BannerPopup() {
         return;
       }
 
-      console.log("불러온 배너:", data); // 디버깅용
+      //   console.log("불러온 배너:", data); // 디버깅용
       setBanners(data || []);
     } catch (error) {
       console.error("배너 로딩 오류:", error);
@@ -103,7 +103,7 @@ export default function BannerPopup() {
   }
 
   if (banners.length === 0) {
-    console.log("표시할 배너가 없습니다."); // 디버깅용
+    // console.log("표시할 배너가 없습니다."); // 디버깅용
     return null;
   }
 
