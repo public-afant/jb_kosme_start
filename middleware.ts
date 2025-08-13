@@ -10,6 +10,7 @@ export async function middleware(request: NextRequest) {
     "/favicon.ico",
     "/apple-icon.png",
     "/icon/",
+    "/manifest.webmanifest",
   ];
   if (publicPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
     return NextResponse.next();
