@@ -62,7 +62,7 @@ export default function AdminBannerWritePage() {
 
       if (!response.ok) {
         console.error("Upload failed:", response.statusText);
-        console.log(response);
+        // console.log(response);
         return null;
       }
 

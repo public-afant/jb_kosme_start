@@ -61,7 +61,7 @@ export default function Home() {
       </div>
 
       {/* 하단 CI 아이콘 */}
-      <div className="flex justify-center mt-8 mb-4">
+      {/* <div className="flex justify-center mt-8 mb-4">
         <Image
           src="/icon/ci.png"
           width={120}
@@ -69,7 +69,7 @@ export default function Home() {
           alt="CI"
           className="opacity-70"
         />
-      </div>
+      </div> */}
     </div>
   );
 }
