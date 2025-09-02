@@ -25,7 +25,7 @@ export default function Splash() {
           alt="title"
           className="mb-5"
         />
-        <div>전북청년창업사관학교 동문회</div>
+        <div>전북청년창업사관학교 총동문회</div>
       </div>
       <div className="mb-20">
         <Image

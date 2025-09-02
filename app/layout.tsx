@@ -13,7 +13,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "JBKNEW",
+  title: "전북청년창업사관학교 총동문회",
 };
 
 export default function RootLayout({

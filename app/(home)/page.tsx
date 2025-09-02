@@ -9,15 +9,34 @@ export default function Home() {
       {/* 배너 팝업 */}
       <BannerPopup />
 
-      <div className="w-full  bg-[#2A3995] rounded-2xl mt-1 p-6 flex flex-col justify-between ">
-        <Image
-          src={"/icon/ic-title-white.png"}
-          width={100}
-          height={50}
-          alt="title"
-        />
-        <div className="font-semibold text-white text-lg mt-4">
-          전북청년창업사관학교 동문 여러분의 방문을 환영합니다.
+      <div
+        className="w-full rounded-2xl mt-1 p-6 flex flex-col justify-between"
+        style={{
+          background: "linear-gradient(135deg, #5353C6 10%, #F96E8C 100%)",
+        }}
+      >
+        <div className="flex justify-center items-center gap-6">
+          <Image
+            src={"/icon/ic-title-white.png"}
+            width={75}
+            height={50}
+            alt="title"
+          />
+          <Image
+            src={"/icon/ic-kosme-logo.png"}
+            width={100}
+            height={20}
+            alt="logo"
+          />
+          <Image
+            src={"/icon/ic-collz-logo.png"}
+            width={90}
+            height={20}
+            alt="logo"
+          />
+        </div>
+        <div className="font-semibold text-white text-[16px] mt-6 text-center">
+          입교 및 동문 여러분의 방문을 환영합니다.
         </div>
       </div>
       <div

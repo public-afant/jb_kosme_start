@@ -73,28 +73,28 @@ export default function Header() {
         <div className="mr-1">
           <Menu />
         </div>
-        <Link href={"/"} className="flex">
+        <Link href={"/"} className="flex items-center">
           <Image
-            src={"/icon/ic-logo.png"}
-            width={28}
+            src={"/icon/ic-logo-simple.png"}
+            width={27}
             height={20}
             alt="logo"
-            className="mr-1 p-0.5"
+            className="mr-1 "
           />
-          <div className="font-bold text-[20px] text-[#2A3995]">
-            JBKNEW 동문회
+          <div className="font-bold text-[18px] text-[#2A3995]">
+            전북청년창업사관학교 총동문회
           </div>
         </Link>
       </div>
       <div className="flex items-center">
-        {user?.role === "admin" && (
+        {/* {user?.role === "admin" && (
           <Link
             href={"/admin/alumni"}
-            className="flex items-center mr-4 rounded-full border border-gray-300 text-[#2A3995] px-4 py-1 text-[14px] font-semibold"
+            className="flex items-center mr-2 rounded-full border border-gray-300 text-[#2A3995] px-3 py-1 text-[14px] font-semibold"
           >
-            관리자
+            관리
           </Link>
-        )}
+        )} */}
         <Link href={"/mypage"} className="flex items-center mr-2">
           <Image
             src={

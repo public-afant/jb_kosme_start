@@ -12,6 +12,9 @@ type User = {
   email: string;
   phone_number: string;
   company_name: string;
+  company_phone_number?: string;
+  title?: string;
+  business_type?: string;
   class_of: string;
   role: string;
   logo_url?: string;
@@ -20,6 +23,7 @@ type User = {
   updated_at: string;
   is_first?: boolean;
   is_agree?: boolean;
+  is_company_phone_agree?: boolean;
 };
 
 export default function Mypage() {
@@ -29,8 +33,12 @@ export default function Mypage() {
   const [formData, setFormData] = useState({
     company_name: "",
     phone_number: "",
+    company_phone_number: "",
+    title: "",
+    business_type: "",
   });
   const [isAgree, setIsAgree] = useState(false);
+  const [isCompanyPhoneAgree, setIsCompanyPhoneAgree] = useState(false);
   const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -83,9 +91,13 @@ export default function Mypage() {
       setFormData({
         company_name: userData.company_name || "",
         phone_number: userData.phone_number || "",
+        company_phone_number: userData.company_phone_number || "",
+        title: userData.title || "",
+        business_type: userData.business_type || "",
       });
       setItems(userData.item || []);
       setIsAgree(userData.is_agree || false);
+      setIsCompanyPhoneAgree(userData.is_company_phone_agree || false);
 
       // is_first가 true인 경우 비밀번호 변경 모달 자동 열기
       if (userData.is_first) {
@@ -100,10 +112,40 @@ export default function Mypage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    // 전화번호 입력 시 숫자만 11자리 제한
+    if (name === "phone_number" || name === "company_phone_number") {
+      const phoneRegex = /^[0-9]*$/;
+      if (phoneRegex.test(value) && value.length <= 11) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
+    }
+    // title 입력 시 한글 기준 30자 제한
+    else if (name === "title") {
+      if (value.length <= 30) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
+    }
+    // business_type 입력 시 한글 기준 10자 제한
+    else if (name === "business_type") {
+      if (value.length <= 10) {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -194,9 +236,13 @@ export default function Mypage() {
         .update({
           company_name: formData.company_name,
           phone_number: formData.phone_number,
+          company_phone_number: formData.company_phone_number,
+          title: formData.title,
+          business_type: formData.business_type,
           logo_url: logoUrl,
           item: items,
           is_agree: isAgree,
+          is_company_phone_agree: isCompanyPhoneAgree,
           updated_at: new Date().toISOString(),
         })
         .eq("id", user.id);
@@ -404,9 +450,13 @@ export default function Mypage() {
     setFormData({
       company_name: user?.company_name || "",
       phone_number: user?.phone_number || "",
+      company_phone_number: user?.company_phone_number || "",
+      title: user?.title || "",
+      business_type: user?.business_type || "",
     });
     setItems(user?.item || []);
     setIsAgree(user?.is_agree || false);
+    setIsCompanyPhoneAgree(user?.is_company_phone_agree || false);
     setProfileImage(null);
     setImagePreview("");
     setShowModal(true);
@@ -451,8 +501,15 @@ export default function Mypage() {
             alt="프로필 이미지"
             width={100}
             height={100}
-            className="w-25 h-25 object-cover bg-white border border-gray-200 rounded-full mb-5"
+            className="w-25 h-25 object-cover bg-white border border-gray-200 rounded-full mb-3"
           />
+
+          {/* 표시 모드 - title */}
+          {user.title && (
+            <div className="text-gray-600 text-sm font-medium mb-3 text-center">
+              {user.title}
+            </div>
+          )}
 
           {/* 표시 모드 - 태그들 */}
           {Array.isArray(user.item) && user.item.length > 0 && (
@@ -469,7 +526,12 @@ export default function Mypage() {
           )}
 
           {/* 표시 모드 - 사용자 정보 */}
-          <div className="flex flex-col items-end w-full mt-10">
+          <div className="flex flex-col items-end w-full mt-5">
+            {user.business_type && (
+              <div className="text-gray-600 text-[16px] font-semibold">
+                {user.business_type}
+              </div>
+            )}
             <div className="font-bold text-xl">
               {user.name}{" "}
               <span className="text-base text-gray-500">
@@ -483,8 +545,11 @@ export default function Mypage() {
               {user.email || "이메일 미입력"}
             </div>
 
-            <div className="text-gray-500 text-sm mb-1">
+            <div className="text-gray-500 text-sm">
               {user.phone_number || "전화번호 미입력"}
+            </div>
+            <div className="text-gray-500 text-sm mb-1">
+              {user.company_phone_number || ""}
             </div>
           </div>
 
@@ -505,6 +570,14 @@ export default function Mypage() {
         <div className="  bg-white border-t border-gray-200 p-3">
           <div className="max-w-2xl mx-auto">
             <div className="flex flex-col gap-4">
+              {user.role === "admin" && (
+                <button
+                  onClick={() => router.push("/admin/alumni")}
+                  className=" text-sm font-medium transition-colors"
+                >
+                  관리자
+                </button>
+              )}
               <button
                 onClick={() => setShowPasswordModal(true)}
                 className="text-[#2A3995] hover:text-[#1f2b7a] text-sm font-medium transition-colors"
@@ -618,6 +691,24 @@ export default function Mypage() {
                 </div>
               </div>
 
+              {/* 업종 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  업종
+                </label>
+                <input
+                  type="text"
+                  name="business_type"
+                  value={formData.business_type}
+                  onChange={handleInputChange}
+                  placeholder="업종을 입력하세요"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.business_type.length}/10자
+                </p>
+              </div>
+
               {/* 회사명 */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -630,6 +721,24 @@ export default function Mypage() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+
+              {/* 나의 한마디 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  회사 소개글
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="나의 한마디를 입력하세요"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.title.length}/30자
+                </p>
               </div>
 
               {/* 전화번호 노출 동의 */}
@@ -657,6 +766,63 @@ export default function Mypage() {
                     ? "다른 동문들이 내 전화번호를 볼 수 있습니다."
                     : "다른 동문들이 내 전화번호를 볼 수 없습니다."}
                 </p>
+              </div>
+
+              {/* 전화번호 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  전화번호
+                </label>
+                <input
+                  type="tel"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  placeholder="전화번호를 입력하세요"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* 회사 전화번호 노출 동의 */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    회사 전화번호 공개 설정
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setIsCompanyPhoneAgree(!isCompanyPhoneAgree)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#2A3995] focus:ring-offset-2 ${
+                      isCompanyPhoneAgree ? "bg-[#2A3995]" : "bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        isCompanyPhoneAgree ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {isCompanyPhoneAgree
+                    ? "다른 동문들이 내 회사 전화번호를 볼 수 있습니다."
+                    : "다른 동문들이 내 회사 전화번호를 볼 수 없습니다."}
+                </p>
+              </div>
+
+              {/* 회사 전화번호 */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  회사 전화번호
+                </label>
+                <input
+                  type="tel"
+                  name="company_phone_number"
+                  value={formData.company_phone_number}
+                  onChange={handleInputChange}
+                  placeholder="회사 전화번호를 입력하세요"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
 
               {/* 아이템 태그 */}

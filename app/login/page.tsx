@@ -84,7 +84,7 @@ export default function Login() {
             className="mb-4"
           />
           <div className="text-lg font-semibold mb-4 text-[#033892]">
-            전북청년창업사관학교 동문회
+            전북청년창업사관학교 총동문회
           </div>
         </div>
         <input

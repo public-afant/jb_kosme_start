@@ -13,10 +13,14 @@ type User = {
   class_of: number;
   company_name: string;
   phone_number: string;
+  company_phone_number?: string;
+  title?: string;
   logo_url: string | null;
   item: string[];
   email: string | null;
   is_agree: boolean;
+  is_company_phone_agree?: boolean;
+  business_type?: string;
 };
 
 export default function Alumni() {
@@ -56,7 +60,7 @@ export default function Alumni() {
     let query = supabase
       .from("user_with_email")
       .select(
-        "id, name, class_of, company_name, phone_number, logo_url, item, email, is_agree"
+        "id, name, class_of, company_name, phone_number, company_phone_number, title, logo_url, item, email, is_agree, is_company_phone_agree, business_type"
       )
       .eq("role", "user")
       .eq("state", true)
@@ -71,7 +75,9 @@ export default function Alumni() {
     // 검색어 필터링
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase().trim();
-      query = query.or(`name.ilike.%${term}%,company_name.ilike.%${term}%`);
+      query = query.or(
+        `name.ilike.%${term}%,company_name.ilike.%${term}%,business_type.ilike.%${term}%`
+      );
     }
 
     const { data, error } = await query.range(from, to);
@@ -156,7 +162,7 @@ export default function Alumni() {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="이름 또는 회사명으로 검색..."
+              placeholder="이름, 회사명, 업종으로 검색..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

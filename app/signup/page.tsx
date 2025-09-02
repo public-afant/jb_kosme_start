@@ -11,6 +11,7 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [companyPhoneNumber, setCompanyPhoneNumber] = useState("");
   const [classOf, setClassOf] = useState<number | "">("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,6 +73,7 @@ export default function Signup() {
         name: name.trim(),
         company_name: companyName.trim(),
         phone_number: phoneNumber.trim(),
+        company_phone_number: companyPhoneNumber.trim() || null,
         class_of: classOf as number,
         state: false, // 승인 대기 상태
         role: "user",
@@ -102,6 +104,24 @@ export default function Signup() {
       } else {
         setEmailError("");
       }
+    }
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const phoneRegex = /^[0-9]*$/;
+    if (phoneRegex.test(value) && value.length <= 11) {
+      setPhoneNumber(value);
+    }
+  };
+
+  const handleCompanyPhoneNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    const phoneRegex = /^[0-9]*$/;
+    if (phoneRegex.test(value) && value.length <= 11) {
+      setCompanyPhoneNumber(value);
     }
   };
 
@@ -203,8 +223,15 @@ export default function Signup() {
             type="tel"
             placeholder="전화번호 (예: 01012345678)"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={handlePhoneNumberChange}
             required
+            className="border p-3 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2A3995]"
+          />
+          <input
+            type="tel"
+            placeholder="회사 전화번호 (선택사항)"
+            value={companyPhoneNumber}
+            onChange={handleCompanyPhoneNumberChange}
             className="border p-3 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2A3995]"
           />
           <select

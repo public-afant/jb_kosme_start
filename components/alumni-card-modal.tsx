@@ -6,10 +6,14 @@ export type AlumniUser = {
   class_of: number;
   company_name: string;
   phone_number: string;
+  company_phone_number?: string;
+  title?: string;
   logo_url: string | null;
   item: string[];
   email: string;
   is_agree: boolean;
+  is_company_phone_agree?: boolean;
+  business_type?: string;
 };
 
 type Props = {
@@ -32,8 +36,13 @@ export default function AlumniCardModal({ user, onClose }: Props) {
           alt="logo"
           width={200}
           height={200}
-          className="w-25 h-25 object-cover aspect-square bg-white border-1 border-gray-200 rounded-full mb-5"
+          className="w-25 h-25 object-cover aspect-square bg-white border-1 border-gray-200 rounded-full mb-3"
         />
+        {user.title && (
+          <div className="text-gray-600 text-sm font-medium mb-3 text-center">
+            {user.title}
+          </div>
+        )}
         {Array.isArray(user.item) && user.item.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-5 justify-center">
             {user.item.map((tag: string, idx: number) => (
@@ -46,18 +55,31 @@ export default function AlumniCardModal({ user, onClose }: Props) {
             ))}
           </div>
         )}
-        <div className="flex flex-col items-end w-full mt-10">
+        <div className="flex flex-col items-end w-full mt-2">
+          {user.business_type && (
+            <div className="text-gray-500 text-[16px] font-semibold">
+              {user.business_type}
+            </div>
+          )}
           <div className="font-bold text-xl">
             {user.name}{" "}
             <span className="text-base text-gray-500">({user.class_of}기)</span>
           </div>
+          {user.business_type && (
+            <div className="text-gray-600 text-[16px] font-semibold">
+              {user.business_type}
+            </div>
+          )}
           <div className="text-gray-700 font-semibold text-[16px] ">
             {user.company_name}
           </div>
           <div className="text-gray-500 text-sm">{user.email}</div>
           {user.is_agree && (
+            <div className="text-gray-500 text-sm">{user.phone_number}</div>
+          )}
+          {user.is_company_phone_agree && user.company_phone_number && (
             <div className="text-gray-500 text-sm mb-1">
-              {user.phone_number}
+              {user.company_phone_number}
             </div>
           )}
         </div>
