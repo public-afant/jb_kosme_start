@@ -164,6 +164,8 @@ function AdminAlumniEditModal({
               onChange={handleClassChange}
               className="border rounded px-3 py-2"
             >
+              <option value={101}>중소벤처기업진흥공단</option>
+              <option value={102}>콜즈다이나믹스</option>
               {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
                 <option key={num} value={num}>
                   {num}기
@@ -283,7 +285,7 @@ function AdminAlumniAddModal({
       name: form.name,
       company_name: form.company_name,
       phone_number: form.phone_number,
-      class_of: form.class_of,
+      class_of: Number(form.class_of),
       logo_url: logoUrl,
       state: true,
       role: "user",
@@ -389,6 +391,8 @@ function AdminAlumniAddModal({
               onChange={handleClassChange}
               className="border border-gray-400 rounded px-3 py-2"
             >
+              <option value={101}>중소벤처기업진흥공단</option>
+              <option value={102}>콜즈다이나믹스</option>
               {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
                 <option key={num} value={num}>
                   {num}기

@@ -34,6 +34,7 @@ export default function Alumni() {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어
   const [selectedClass, setSelectedClass] = useState<number | "all">("all"); // 선택된 기수
   const [availableClasses, setAvailableClasses] = useState<number[]>([]); // 사용 가능한 기수들
+  const [activeTab, setActiveTab] = useState<"class" | "business">("class"); // 활성 탭
 
   // 사용 가능한 기수들 불러오기
   const fetchAvailableClasses = useCallback(async () => {
@@ -41,6 +42,7 @@ export default function Alumni() {
       .from("user_with_email")
       .select("class_of")
       .eq("role", "user")
+      .lte("class_of", 100) // 100 이하의 기수만 조회
       .order("class_of", { ascending: true });
 
     if (!error && data) {
@@ -60,12 +62,22 @@ export default function Alumni() {
     let query = supabase
       .from("user_with_email")
       .select(
-        "id, name, class_of, company_name, phone_number, company_phone_number, title, logo_url, item, email, is_agree, is_company_phone_agree, business_type"
+        "id, name, class_of, company_name, phone_number, company_phone_number, title, logo_url, item, email, is_agree, is_company_phone_agree, business_type, role"
       )
-      .eq("role", "user")
       .eq("state", true)
       .order("class_of", { ascending: true })
       .order("id", { ascending: true });
+
+    // 탭에 따른 role 필터링
+    if (activeTab === "class") {
+      // 기수 탭: 일반 동문만, 100 이하 기수만
+      query = query.eq("role", "user").lte("class_of", 100);
+    } else {
+      // 사업단 탭: 콜즈, 중진공 + 101~200기 일반 동문 + 101~200기 관리자
+      query = query.or(
+        `role.in.(콜즈,중진공),and(role.eq.user,class_of.gte.101,class_of.lte.200),and(role.eq.admin,class_of.gte.101,class_of.lte.200)`
+      );
+    }
 
     // 기수 필터링
     if (selectedClass !== "all") {
@@ -99,19 +111,19 @@ export default function Alumni() {
       setHasMore((data?.length || 0) === PAGE_SIZE);
     }
     setLoading(false);
-  }, [page, searchTerm, selectedClass]);
+  }, [page, searchTerm, selectedClass, activeTab]);
 
   // 초기 기수 목록 불러오기
   useEffect(() => {
     fetchAvailableClasses();
   }, [fetchAvailableClasses]);
 
-  // 검색어나 기수가 변경되면 페이지 리셋하고 데이터 다시 불러오기
+  // 검색어, 기수, 탭이 변경되면 페이지 리셋하고 데이터 다시 불러오기
   useEffect(() => {
     setPage(0);
     setUsers([]);
     setHasMore(true);
-  }, [searchTerm, selectedClass]);
+  }, [searchTerm, selectedClass, activeTab]);
 
   // 데이터 불러오기 (페이지 변경 또는 필터 변경 시)
   useEffect(() => {
@@ -136,28 +148,62 @@ export default function Alumni() {
 
   return (
     <div>
+      {/* 탭 섹션 */}
+      <div className="px-3 py-2">
+        <div className="flex border-b border-gray-200">
+          <button
+            onClick={() => {
+              setActiveTab("class");
+              setSelectedClass("all");
+            }}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${
+              activeTab === "class"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            기수
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab("business");
+              setSelectedClass("all");
+            }}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${
+              activeTab === "business"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            사업단
+          </button>
+        </div>
+      </div>
+
       {/* 검색 및 필터 섹션 */}
       <div className="my-1 px-3">
         <div className="flex flex-col sm:flex-row gap-2">
-          {/* 기수 선택 */}
-          <div className="">
-            <select
-              value={selectedClass}
-              onChange={(e) =>
-                setSelectedClass(
-                  e.target.value === "all" ? "all" : Number(e.target.value)
-                )
-              }
-              className="w-full h-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">전체 기수</option>
-              {availableClasses.map((classNum) => (
-                <option key={classNum} value={classNum}>
-                  {classNum}기
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* 기수 선택 (기수 탭에서만 표시) */}
+          {activeTab === "class" && (
+            <div className="">
+              <select
+                value={selectedClass}
+                onChange={(e) =>
+                  setSelectedClass(
+                    e.target.value === "all" ? "all" : Number(e.target.value)
+                  )
+                }
+                className="w-full h-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">전체 기수</option>
+                {availableClasses.map((classNum) => (
+                  <option key={classNum} value={classNum}>
+                    {classNum}기
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           {/* 검색창 */}
           <div className="flex-1">
             <input
@@ -193,7 +239,7 @@ export default function Alumni() {
             />
             <div>
               <div className="font-bold text-[16px]">
-                {user.name} ({user.class_of}기)
+                {user.name} {activeTab === "class" && `(${user.class_of}기)`}
               </div>
               <div className="text-gray-700 font-semibold">
                 {user.company_name}
@@ -221,6 +267,7 @@ export default function Alumni() {
         <AlumniCardModal
           user={selectedUser}
           onClose={() => setSelectedUser(null)}
+          activeTab={activeTab}
         />
       )}
     </div>

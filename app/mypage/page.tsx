@@ -534,9 +534,11 @@ export default function Mypage() {
             )}
             <div className="font-bold text-xl">
               {user.name}{" "}
-              <span className="text-base text-gray-500">
-                ({user.class_of}기)
-              </span>
+              {Number(user.class_of) <= 100 && (
+                <span className="text-base text-gray-500">
+                  ({user.class_of}기)
+                </span>
+              )}
             </div>
             <div className="text-gray-700 font-semibold text-[16px]">
               {user.company_name || "회사명 미입력"}
@@ -733,7 +735,7 @@ export default function Mypage() {
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
-                  placeholder="나의 한마디를 입력하세요"
+                  placeholder="회사 소개글을 입력하세요"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">

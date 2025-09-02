@@ -19,9 +19,10 @@ export type AlumniUser = {
 type Props = {
   user: AlumniUser;
   onClose: () => void;
+  activeTab?: "class" | "business";
 };
 
-export default function AlumniCardModal({ user, onClose }: Props) {
+export default function AlumniCardModal({ user, onClose, activeTab }: Props) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
@@ -63,7 +64,11 @@ export default function AlumniCardModal({ user, onClose }: Props) {
           )}
           <div className="font-bold text-xl">
             {user.name}{" "}
-            <span className="text-base text-gray-500">({user.class_of}기)</span>
+            {activeTab === "class" && (
+              <span className="text-base text-gray-500">
+                ({user.class_of}기)
+              </span>
+            )}
           </div>
           {user.business_type && (
             <div className="text-gray-600 text-[16px] font-semibold">
