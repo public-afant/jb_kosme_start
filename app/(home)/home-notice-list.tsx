@@ -19,9 +19,16 @@ type Notice = {
 export default function HomeNoticeList() {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [loading, setLoading] = useState(true);
+  const [readNotices, setReadNotices] = useState<Set<string>>(new Set());
+  const LS_KEY = "read_notice_ids";
 
   useEffect(() => {
     fetchNotices();
+    try {
+      const raw =
+        typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null;
+      if (raw) setReadNotices(new Set(JSON.parse(raw)));
+    } catch (_) {}
   }, []);
 
   const fetchNotices = async () => {
@@ -61,22 +68,45 @@ export default function HomeNoticeList() {
         </div>
       ) : (
         <>
-          {notices.map((notice) => (
-            <Link key={notice.id} href={`/notice/${notice.id}`}>
-              <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                <div className="text-[16px] font-bold mb-2">{notice.title}</div>
-                <div className="text-[14px] text-[#555D6D] mb-2 line-clamp-2">
-                  {notice.content}
+          {notices.map((notice) => {
+            const isRead = readNotices.has(String(notice.id));
+            return (
+              <Link
+                key={notice.id}
+                href={`/notice/${notice.id}`}
+                onClick={() => {
+                  const next = new Set(readNotices);
+                  next.add(String(notice.id));
+                  setReadNotices(next);
+                  try {
+                    localStorage.setItem(
+                      LS_KEY,
+                      JSON.stringify(Array.from(next))
+                    );
+                  } catch (_) {}
+                }}
+              >
+                <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                  <div
+                    className={`text-[16px] font-bold mb-2 ${
+                      isRead ? "text-gray-500" : "text-gray-900"
+                    }`}
+                  >
+                    {notice.title}
+                  </div>
+                  <div className="text-[14px] text-[#555D6D] mb-2 line-clamp-2">
+                    {notice.content}
+                  </div>
+                  <div className="flex justify-between items-center text-[12px] text-[#868B94]">
+                    <span>
+                      {new Date(notice.created_at).toLocaleDateString("ko-KR")}
+                    </span>
+                    <span>조회수 {notice.views}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center text-[12px] text-[#868B94]">
-                  <span>
-                    {new Date(notice.created_at).toLocaleDateString("ko-KR")}
-                  </span>
-                  <span>조회수 {notice.views}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
 
           {/* 더보기 버튼 */}
           {notices.length === 5 && (

@@ -21,6 +21,7 @@ export default function NoticeDetail() {
   const router = useRouter();
   const [notice, setNotice] = useState<Notice | null>(null);
   const [loading, setLoading] = useState(true);
+  const LS_KEY = "read_notice_ids";
 
   useEffect(() => {
     if (params.id) {
@@ -52,6 +53,19 @@ export default function NoticeDetail() {
           .from("notice")
           .update({ views: (data.views || 0) + 1 })
           .eq("id", id);
+
+        // 읽음 처리: 로컬스토리지에 저장
+        try {
+          const raw =
+            typeof window !== "undefined" ? localStorage.getItem(LS_KEY) : null;
+          const ids: string[] = raw ? JSON.parse(raw) : [];
+          if (!ids.includes(String(id))) {
+            const next = [...ids, String(id)];
+            localStorage.setItem(LS_KEY, JSON.stringify(next));
+          }
+        } catch (_) {
+          // ignore
+        }
       }
     } catch (error) {
       console.error("Error:", error);
