@@ -66,7 +66,7 @@ export default function Alumni() {
       )
       .eq("state", true)
       .order("class_of", { ascending: true })
-      .order("id", { ascending: true });
+      .order("name", { ascending: true });
 
     // 탭에 따른 role 필터링
     if (activeTab === "class") {

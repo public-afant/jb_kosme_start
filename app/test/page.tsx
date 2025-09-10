@@ -13,7 +13,10 @@ export default function Test() {
     setMessage("사용자 등록을 시작합니다...");
 
     try {
-      const response = await fetch("/test/user.json");
+      const response = await fetch("/api/test-users?file=user-3");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch test users: ${response.status}`);
+      }
       const users = await response.json();
 
       let successCount = 0;
@@ -51,7 +54,7 @@ export default function Test() {
             logo_url: user.logo_url,
             item: user.item,
             role: user.role,
-            state: "active",
+            state: true,
           });
 
           if (insertError) {
