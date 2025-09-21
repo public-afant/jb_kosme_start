@@ -68,7 +68,7 @@ export default function MenuPanel({ setIsMenu }: MenuPanelProps) {
             </Link>
             <Link
               href={"/events"}
-              className=""
+              className="mb-3"
               onClick={() => setIsMenu(false)}
             >
               <Image
@@ -78,6 +78,19 @@ export default function MenuPanel({ setIsMenu }: MenuPanelProps) {
                 alt="alumni"
               />
               <div className="pl-3">행사일정</div>
+            </Link>
+            <Link
+              href={"/organization"}
+              className=""
+              onClick={() => setIsMenu(false)}
+            >
+              <Image
+                src={"/icon/ic-user-2.png"}
+                width={25}
+                height={10}
+                alt="organization"
+              />
+              <div className="pl-3">임원 조직도</div>
             </Link>
           </div>
 

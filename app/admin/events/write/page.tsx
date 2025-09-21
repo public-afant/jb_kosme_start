@@ -12,6 +12,7 @@ export default function AdminEventsWritePage() {
     date: "",
     time: "",
     state: true,
+    url: "",
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +55,7 @@ export default function AdminEventsWritePage() {
       date: form.date,
       time: form.time,
       state: form.state,
+      url: form.url.trim() || null,
     });
 
     setSaving(false);
@@ -163,6 +165,25 @@ export default function AdminEventsWritePage() {
             className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent resize-none"
             placeholder="행사일정 내용을 입력하세요"
           />
+        </div>
+
+        {/* URL */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            URL
+          </label>
+          <input
+            name="url"
+            type="url"
+            value={form.url}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent"
+            placeholder="https://example.com (선택사항)"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            행사와 관련된 링크가 있다면 입력하세요. 입력 시 바로가기 버튼이
+            표시됩니다.
+          </p>
         </div>
 
         {/* 활성화 여부 */}

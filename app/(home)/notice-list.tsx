@@ -15,6 +15,7 @@ type Notice = {
   updated_at: string;
   fk_user_id: string;
   state: boolean;
+  image_url?: string;
 };
 
 export default function NoticeList() {
@@ -188,21 +189,39 @@ export default function NoticeList() {
                 }}
               >
                 <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                  <div
-                    className={`text-[16px] font-bold mb-2 ${
-                      isRead ? "text-gray-500" : "text-gray-900"
-                    }`}
-                  >
-                    {notice.title}
-                  </div>
-                  <div className="text-[14px] text-[#555D6D] mb-2 line-clamp-2">
-                    {notice.content}
-                  </div>
-                  <div className="flex justify-between items-center text-[12px] text-[#868B94]">
-                    <span>
-                      {new Date(notice.created_at).toLocaleDateString("ko-KR")}
-                    </span>
-                    <span>조회수 {notice.views}</span>
+                  <div className="flex gap-3">
+                    {/* 이미지 */}
+                    {notice.image_url && (
+                      <div className="flex-shrink-0">
+                        <img
+                          src={notice.image_url}
+                          alt={notice.title}
+                          className="w-20 h-20 object-cover rounded border border-gray-200"
+                        />
+                      </div>
+                    )}
+
+                    {/* 텍스트 내용 */}
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className={`text-[16px] font-bold mb-2 ${
+                          isRead ? "text-gray-500" : "text-gray-900"
+                        }`}
+                      >
+                        {notice.title}
+                      </div>
+                      <div className="text-[14px] text-[#555D6D] mb-2 line-clamp-2">
+                        {notice.content}
+                      </div>
+                      <div className="flex justify-between items-center text-[12px] text-[#868B94]">
+                        <span>
+                          {new Date(notice.created_at).toLocaleDateString(
+                            "ko-KR"
+                          )}
+                        </span>
+                        <span>조회수 {notice.views}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Link>

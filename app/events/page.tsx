@@ -15,6 +15,7 @@ type Event = {
   state: boolean;
   created_at: string;
   updated_at: string;
+  url?: string;
 };
 
 export default function Events() {
@@ -356,11 +357,13 @@ export default function Events() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                            {eventDate.getDate()}일 ({dayName})
-                          </div>
-                          <div className="text-gray-500 text-sm">
-                            {formatTime(event.time)}
+                          <div className="flex items-center gap-2">
+                            <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                              {eventDate.getDate()}일 ({dayName})
+                            </div>
+                            <div className="text-gray-500 text-sm">
+                              {formatTime(event.time)}
+                            </div>
                           </div>
                         </div>
                         <h4 className="text-lg font-semibold text-gray-900 mb-2">
@@ -369,6 +372,18 @@ export default function Events() {
                         <p className="text-gray-600 text-sm line-clamp-2">
                           {event.content}
                         </p>
+                        {event.url && (
+                          <div className="mt-3">
+                            <a
+                              href={event.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 bg-[#2A3995] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1e2a7a] transition-colors"
+                            >
+                              바로가기
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

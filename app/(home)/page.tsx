@@ -71,6 +71,15 @@ export default function Home() {
           />
           <div className="mt-2">행사일정</div>
         </Link>
+        <Link href={"/organization"} className="">
+          <Image
+            src={"/icon/ic-user-2.png"}
+            width={40}
+            height={30}
+            alt="organization"
+          />
+          <div className="mt-2">임원 조직도</div>
+        </Link>
       </div>
       <div>
         <div className="font-bold text-[22px] mt-5">

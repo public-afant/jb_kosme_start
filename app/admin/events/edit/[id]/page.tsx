@@ -16,6 +16,7 @@ type Event = {
   state: boolean;
   created_at: string;
   updated_at: string;
+  url?: string;
 };
 
 export default function AdminEventsEditPage({
@@ -31,6 +32,7 @@ export default function AdminEventsEditPage({
     date: "",
     time: "",
     state: true,
+    url: "",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -81,6 +83,7 @@ export default function AdminEventsEditPage({
         date: formattedDate,
         time: formattedTime,
         state: data.state,
+        url: data.url || "",
       });
     } catch (e) {
       setError("행사일정을 불러오는 중 오류가 발생했습니다.");
@@ -117,6 +120,7 @@ export default function AdminEventsEditPage({
         date: form.date,
         time: form.time,
         state: form.state,
+        url: form.url.trim() || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id);
@@ -135,7 +139,8 @@ export default function AdminEventsEditPage({
       form.content !== event?.content ||
       form.date !== event?.date ||
       form.time !== (event?.time || "") ||
-      form.state !== event?.state
+      form.state !== event?.state ||
+      form.url !== (event?.url || "")
     ) {
       if (confirm("수정 중인 내용이 있습니다. 정말 나가시겠습니까?")) {
         router.push("/admin/events");
@@ -260,6 +265,25 @@ export default function AdminEventsEditPage({
             className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent resize-none"
             placeholder="행사일정 내용을 입력하세요"
           />
+        </div>
+
+        {/* URL */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            URL
+          </label>
+          <input
+            name="url"
+            type="url"
+            value={form.url}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent"
+            placeholder="https://example.com (선택사항)"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            행사와 관련된 링크가 있다면 입력하세요. 입력 시 바로가기 버튼이
+            표시됩니다.
+          </p>
         </div>
 
         {/* 활성화 여부 */}

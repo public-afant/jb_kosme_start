@@ -10,7 +10,11 @@ export default function AdminNoticeWritePage() {
     title: "",
     content: "",
     state: true,
+    image_url: "",
   });
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -24,6 +28,60 @@ export default function AdminNoticeWritePage() {
       [name]:
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크 (5MB 제한)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("파일 크기는 5MB를 초과할 수 없습니다.");
+        return;
+      }
+
+      // 이미지 파일 타입 체크
+      if (!file.type.startsWith("image/")) {
+        setError("이미지 파일만 업로드 가능합니다.");
+        return;
+      }
+
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setError(null);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      setUploading(true);
+
+      // 고유한 파일명 생성
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+      const { data, error } = await supabase.storage
+        .from("profile")
+        .upload(fileName, file);
+
+      if (error) {
+        console.error("Upload error:", error);
+        return null;
+      }
+
+      // 공개 URL 생성
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("profile").getPublicUrl(fileName);
+
+      return publicUrl;
+    } catch (error) {
+      console.error("Upload error:", error);
+      return null;
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSave = async () => {
@@ -45,12 +103,27 @@ export default function AdminNoticeWritePage() {
       return;
     }
 
-    const { error } = await supabase.from("notice").insert({
+    let imageUrl = form.image_url;
+
+    // 이미지가 선택된 경우 업로드
+    if (selectedFile) {
+      const uploadedUrl = await uploadImage(selectedFile);
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      } else {
+        setError("이미지 업로드에 실패했습니다.");
+        setSaving(false);
+        return;
+      }
+    }
+
+    const { data: insertData, error } = await supabase.from("notice").insert({
       fk_user_id: user.id,
       title: form.title.trim(),
       content: form.content.trim(),
       state: form.state,
       views: 0,
+      image_url: imageUrl || null,
     });
 
     setSaving(false);
@@ -85,10 +158,10 @@ export default function AdminNoticeWritePage() {
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || uploading}
             className="px-6 py-2 bg-[#2A3995] text-white rounded hover:bg-[#1f2b7a] disabled:opacity-50 transition-colors"
           >
-            {saving ? "저장 중..." : "저장"}
+            {saving || uploading ? "저장 중..." : "저장"}
           </button>
         </div>
       </div>
@@ -132,6 +205,57 @@ export default function AdminNoticeWritePage() {
             className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent resize-none"
             placeholder="공지사항 내용을 입력하세요"
           />
+        </div>
+
+        {/* 이미지 업로드 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            이미지
+          </label>
+          <div className="space-y-4">
+            {/* 파일 선택 */}
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#2A3995] file:text-white hover:file:bg-[#1f2b7a]"
+                disabled={uploading}
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                JPG, PNG, GIF 파일만 업로드 가능합니다. (최대 5MB)
+              </p>
+            </div>
+
+            {/* 미리보기 */}
+            {previewUrl && (
+              <div className="relative">
+                <img
+                  src={previewUrl}
+                  alt="미리보기"
+                  className="max-w-full h-64 object-contain border border-gray-300 rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setPreviewUrl(null);
+                  }}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+
+            {/* 업로드 중 표시 */}
+            {uploading && (
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2A3995]"></div>
+                이미지 업로드 중...
+              </div>
+            )}
+          </div>
         </div>
 
         {/* 활성화 여부 */}

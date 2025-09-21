@@ -14,6 +14,7 @@ type Notice = {
   updated_at: string;
   fk_user_id: string;
   state: boolean;
+  image_url?: string;
 };
 
 export default function NoticeDetail() {
@@ -136,6 +137,17 @@ export default function NoticeDetail() {
           </div>
           <div className="text-sm text-gray-500">조회수 {notice.views}</div>
         </div>
+
+        {/* 이미지 */}
+        {notice.image_url && (
+          <div className="mb-6">
+            <img
+              src={notice.image_url}
+              alt={notice.title}
+              className="w-full max-w-2xl mx-auto rounded-lg shadow-sm border border-gray-200"
+            />
+          </div>
+        )}
 
         {/* 내용 */}
         <div className="prose max-w-none">

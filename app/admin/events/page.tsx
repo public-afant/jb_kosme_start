@@ -16,6 +16,7 @@ type Event = {
   state: boolean;
   created_at: string;
   updated_at: string;
+  url?: string;
   user_name?: string;
 };
 
@@ -146,6 +147,16 @@ export default function AdminEventsPage() {
                 </div>
                 <div className="flex items-center gap-4 text-xs text-gray-500">
                   <span>작성일: {formatDate(event.created_at)}</span>
+                  {event.url && (
+                    <a
+                      href={event.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                    >
+                      링크
+                    </a>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col gap-2 items-end">

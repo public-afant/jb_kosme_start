@@ -15,6 +15,7 @@ type Notice = {
   state: boolean;
   created_at: string;
   updated_at: string;
+  image_url?: string;
 };
 
 export default function AdminNoticeEditPage({
@@ -28,7 +29,11 @@ export default function AdminNoticeEditPage({
     title: "",
     content: "",
     state: true,
+    image_url: "",
   });
+  const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +63,13 @@ export default function AdminNoticeEditPage({
         title: data.title,
         content: data.content,
         state: data.state,
+        image_url: data.image_url || "",
       });
+
+      // 기존 이미지가 있으면 미리보기 설정
+      if (data.image_url) {
+        setPreviewUrl(data.image_url);
+      }
     } catch (e) {
       setError("공지사항을 불러오는 중 오류가 발생했습니다.");
     } finally {
@@ -77,6 +88,60 @@ export default function AdminNoticeEditPage({
     }));
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크 (5MB 제한)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("파일 크기는 5MB를 초과할 수 없습니다.");
+        return;
+      }
+
+      // 이미지 파일 타입 체크
+      if (!file.type.startsWith("image/")) {
+        setError("이미지 파일만 업로드 가능합니다.");
+        return;
+      }
+
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setError(null);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      setUploading(true);
+
+      // 고유한 파일명 생성
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2)}.${fileExt}`;
+
+      const { data, error } = await supabase.storage
+        .from("profile")
+        .upload(fileName, file);
+
+      if (error) {
+        console.error("Upload error:", error);
+        return null;
+      }
+
+      // 공개 URL 생성
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("profile").getPublicUrl(fileName);
+
+      return publicUrl;
+    } catch (error) {
+      console.error("Upload error:", error);
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSave = async () => {
     if (!form.title.trim() || !form.content.trim()) {
       setError("제목과 내용을 모두 입력해주세요.");
@@ -86,12 +151,27 @@ export default function AdminNoticeEditPage({
     setSaving(true);
     setError(null);
 
+    let imageUrl = form.image_url;
+
+    // 새 이미지가 선택된 경우 업로드
+    if (selectedFile) {
+      const uploadedUrl = await uploadImage(selectedFile);
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      } else {
+        setError("이미지 업로드에 실패했습니다.");
+        setSaving(false);
+        return;
+      }
+    }
+
     const { error } = await supabase
       .from("notice")
       .update({
         title: form.title.trim(),
         content: form.content.trim(),
         state: form.state,
+        image_url: imageUrl || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id);
@@ -108,7 +188,9 @@ export default function AdminNoticeEditPage({
     if (
       form.title !== notice?.title ||
       form.content !== notice?.content ||
-      form.state !== notice?.state
+      form.state !== notice?.state ||
+      form.image_url !== (notice?.image_url || "") ||
+      selectedFile !== null
     ) {
       if (confirm("수정 중인 내용이 있습니다. 정말 나가시겠습니까?")) {
         router.push("/admin/notice");
@@ -158,10 +240,10 @@ export default function AdminNoticeEditPage({
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || uploading}
             className="px-6 py-2 bg-[#2A3995] text-white rounded hover:bg-[#1f2b7a] disabled:opacity-50 transition-colors"
           >
-            {saving ? "저장 중..." : "저장"}
+            {saving || uploading ? "저장 중..." : "저장"}
           </button>
         </div>
       </div>
@@ -205,6 +287,57 @@ export default function AdminNoticeEditPage({
             className="w-full px-4 py-3 border border-gray-300 rounded focus:ring-2 focus:ring-[#2A3995] focus:border-transparent resize-none"
             placeholder="공지사항 내용을 입력하세요"
           />
+        </div>
+
+        {/* 이미지 업로드 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            이미지
+          </label>
+          <div className="space-y-4">
+            {/* 파일 선택 */}
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#2A3995] file:text-white hover:file:bg-[#1f2b7a]"
+                disabled={uploading}
+              />
+              <p className="mt-1 text-sm text-gray-500">
+                JPG, PNG, GIF 파일만 업로드 가능합니다. (최대 5MB)
+              </p>
+            </div>
+
+            {/* 미리보기 */}
+            {previewUrl && (
+              <div className="relative">
+                <img
+                  src={previewUrl}
+                  alt="미리보기"
+                  className="max-w-full h-64 object-contain border border-gray-300 rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setPreviewUrl(notice?.image_url || null);
+                  }}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+
+            {/* 업로드 중 표시 */}
+            {uploading && (
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2A3995]"></div>
+                이미지 업로드 중...
+              </div>
+            )}
+          </div>
         </div>
 
         {/* 활성화 여부 */}

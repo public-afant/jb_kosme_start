@@ -8,19 +8,24 @@ const supabase = createClient();
 const PAGE_SIZE = 20;
 
 type User = {
-  id: string;
+  id: string; // UUID를 string으로 받음
   name: string;
-  class_of: number;
-  company_name: string;
+  email: string | null;
   phone_number: string;
+  company_name: string;
+  class_of: number; // NUMERIC을 number로 받음
+  role: string;
+  logo_url: string | null;
+  item: string[]; // JSONB를 string[]로 받음
+  state: boolean;
   company_phone_number?: string;
   title?: string;
-  logo_url: string | null;
-  item: string[];
-  email: string | null;
+  business_type?: string;
+  is_first?: boolean;
   is_agree: boolean;
   is_company_phone_agree?: boolean;
-  business_type?: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export default function Alumni() {
@@ -34,7 +39,9 @@ export default function Alumni() {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어
   const [selectedClass, setSelectedClass] = useState<number | "all">("all"); // 선택된 기수
   const [availableClasses, setAvailableClasses] = useState<number[]>([]); // 사용 가능한 기수들
-  const [activeTab, setActiveTab] = useState<"class" | "business">("class"); // 활성 탭
+  const [activeTab, setActiveTab] = useState<"class" | "kdi" | "private">(
+    "class"
+  ); // 활성 탭
 
   // 사용 가능한 기수들 불러오기
   const fetchAvailableClasses = useCallback(async () => {
@@ -53,7 +60,7 @@ export default function Alumni() {
     }
   }, []);
 
-  // 데이터 불러오기 (검색어와 기수 필터 적용)
+  // 데이터 불러오기 (기존 방식으로 되돌림)
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     const from = page * PAGE_SIZE;
@@ -72,11 +79,12 @@ export default function Alumni() {
     if (activeTab === "class") {
       // 기수 탭: 일반 동문만, 100 이하 기수만
       query = query.eq("role", "user").lte("class_of", 100);
-    } else {
-      // 사업단 탭: 콜즈, 중진공 + 101~200기 일반 동문 + 101~200기 관리자
-      query = query.or(
-        `role.in.(콜즈,중진공),and(role.eq.user,class_of.gte.101,class_of.lte.200),and(role.eq.admin,class_of.gte.101,class_of.lte.200)`
-      );
+    } else if (activeTab === "kdi") {
+      // 중진공 탭: 101기 + 콜즈, 중진공 role
+      query = query.or(`class_of.eq.101,role.in.(콜즈,중진공)`);
+    } else if (activeTab === "private") {
+      // 민간운영사 탭: 102~150기
+      query = query.gte("class_of", 102).lte("class_of", 150);
     }
 
     // 기수 필터링
@@ -84,7 +92,7 @@ export default function Alumni() {
       query = query.eq("class_of", selectedClass);
     }
 
-    // 검색어 필터링
+    // 검색어 필터링 (기본 필드만)
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase().trim();
       query = query.or(
@@ -166,16 +174,29 @@ export default function Alumni() {
           </button>
           <button
             onClick={() => {
-              setActiveTab("business");
+              setActiveTab("kdi");
               setSelectedClass("all");
             }}
             className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${
-              activeTab === "business"
+              activeTab === "kdi"
                 ? "border-blue-500 text-blue-600"
                 : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
-            사업단
+            중진공
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab("private");
+              setSelectedClass("all");
+            }}
+            className={`px-4 py-2 text-sm font-bold border-b-2 transition-colors ${
+              activeTab === "private"
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            민간운영사
           </button>
         </div>
       </div>
