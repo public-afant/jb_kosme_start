@@ -19,7 +19,7 @@ export type AlumniUser = {
 type Props = {
   user: AlumniUser;
   onClose: () => void;
-  activeTab?: "class" | "business";
+  activeTab?: "class" | "kdi" | "private";
 };
 
 export default function AlumniCardModal({ user, onClose, activeTab }: Props) {
