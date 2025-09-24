@@ -70,11 +70,11 @@ export default function AlumniCardModal({ user, onClose, activeTab }: Props) {
               </span>
             )}
           </div>
-          {user.business_type && (
+          {/* {user.business_type && (
             <div className="text-gray-600 text-[16px] font-semibold">
               {user.business_type}
             </div>
-          )}
+          )} */}
           <div className="text-gray-700 font-semibold text-[16px] ">
             {user.company_name}
           </div>
