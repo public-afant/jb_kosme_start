@@ -67,3 +67,8 @@ build/
 # Keep only TWA manifest
 android-twa/**
 !android-twa/twa-manifest.json
+
+# Keep only TWA manifest (re-include dir + file)
+android-twa/**
+!android-twa/
+!android-twa/twa-manifest.json
