@@ -39,3 +39,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+android-twa/.gradle/
+android-twa/.idea/
+android-twa/build/
+android-twa/app/build/
+build/
+.apk
+.keystore
+.DS_Store
+# TWA/Android
+android-twa/.gradle/
+android-twa/.idea/
+android-twa/build/
+android-twa/app/build/
+# Generic build artifacts
+build/
+# Binaries
+*.apk
+*.keystore
+# macOS
+.DS_Store
