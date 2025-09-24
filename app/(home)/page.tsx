@@ -17,7 +17,7 @@ export default function Home() {
       >
         <div className="flex justify-center items-center gap-6">
           <Image
-            src={"/icon/ic-title-white.png"}
+            src={"/icon/ic-jb-logo.png"}
             width={75}
             height={50}
             alt="title"
